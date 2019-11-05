@@ -5,6 +5,7 @@ from copy import deepcopy
 class point:
 	p_=np.array([])
 	dim_=0
+	small_=1e-14
 	#constructor
 	def __init__(self,dim,array):
 		self.dim_=dim
@@ -37,6 +38,13 @@ class point:
 			dist_=dist_+(self.p_[i]-other.p_[i])*(self.p_[i]-other.p_[i])
 		dist_=pow(dist_,0.5)
 		return dist_
+	#mag 
+	def mag(self):
+		mag_=0
+		for i in range(0,self.dim_):
+			mag_=mag_+(self.p_[i]*self.p_[i])
+		mag_=pow(mag_,0.5)
+		return mag_
 	#to determine if a point left or right another point
 	def isLeft(self,other,axis):
 		index_=0
@@ -50,6 +58,13 @@ class point:
 			return True 
 		else:
 			return False
+	def angle(self,other):
+		angle_=-10000
+		a_=self*other
+		b_=self.mag()
+		c_=other.mag()
+		thetaRad_= np.arccos(a_/(b_*c_+self.small_))
+		return (thetaRad_*180/np.pi)
 	#print attributes of the point class
 	def printPoint(self):
 		print('Dimension is ',self.dim_)
